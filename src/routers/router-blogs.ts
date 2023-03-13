@@ -8,11 +8,11 @@ import {authorizationGuard} from "../middleware/authorization-guard";
 export const blogsRouter = Router({})
 
 //-------------------GET---------------//
-blogsRouter.get('/', async(req: Request, res: Response) => {
+blogsRouter.get('/', async (req: Request, res: Response) => {
     const blogs = await blogsControl.getAllBlogs()
     res.status(HTTP_STATUSES.OK200).send(blogs)
 })
-blogsRouter.get('/:id', async(req: Request, res: Response) => {
+blogsRouter.get('/:id', async (req: Request, res: Response) => {
     const findBlog = await blogsControl.getBlogById(req.params.id)
     if (findBlog) {
         res.status(HTTP_STATUSES.OK200).send(findBlog)
@@ -28,12 +28,11 @@ blogsRouter.post('/', authorizationGuard, blogValidations, inputValidationMiddle
 //-------------------PUT---------------//
 blogsRouter.put('/:id', authorizationGuard, blogValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const isChangeBlog = await blogsControl.changeBlog(req.params.id, req.body)
-    if (isChangeBlog)
-    {
+    if (isChangeBlog) {
         res.sendStatus(HTTP_STATUSES.NO_CONTENT)
         return
     }
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+    res.sendStatus(HTTP_STATUSES.NOT_FOUND)
 })
 //-------------------DELETE---------------//
 blogsRouter.delete('/:id', authorizationGuard, async (req: Request, res: Response) => {

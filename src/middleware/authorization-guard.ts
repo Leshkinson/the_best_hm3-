@@ -4,6 +4,7 @@ export const authorizationGuard = (req: Request, res: Response, next: NextFuncti
  const isAuth = "YWRtaW46cXdlcnR5" ===   req.headers.authorization?.replace('Basic', '').trim()
     if(!isAuth){
         res.sendStatus(401)
+        return
     }
     next()
 }

@@ -2,32 +2,6 @@ import {PostType} from "../types";
 import {blogsControl} from "./repository-blogs";
 import {postCollections} from "../../mongoDB";
 
-
-// export let arrPosts: PostType[] = [{
-//     id: "1",
-//     title: "Super title",
-//     shortDescription: "bad men",
-//     content: "little",
-//     blogId: "3",
-//     blogName: "Aleksandr"
-// },
-//     {
-//         id: "2",
-//         title: "Worse title",
-//         shortDescription: "super men",
-//         content: "long",
-//         blogId: "2",
-//         blogName: "Anton"
-//     },
-//     {
-//         id: "3",
-//         title: "just title",
-//         shortDescription: "just men",
-//         content: "just more",
-//         blogId: "1",
-//         blogName: "Andrey"
-//     }]
-
 export const postsControl = {
     async getAllPosts(): Promise<PostType[]> {
         return postCollections.find({}).toArray()
