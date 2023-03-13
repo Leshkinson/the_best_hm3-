@@ -40,7 +40,7 @@ export const blogsControl = {
     },
     async changeBlog(id: string, body: BlogType): Promise<boolean> {
         const {name, description, websiteUrl} = body
-        const result = await blogCollections.updateOne({id: id}, {name, description, websiteUrl})
+        const result = await blogCollections.updateOne({id: id}, {$set: {name, description, websiteUrl}})
         return result.matchedCount === 1;
 
     },
