@@ -1,5 +1,8 @@
 import {body, CustomValidator} from "express-validator";
 import {blogsControl} from "../repositories/repository-blogs";
+import {NextFunction, Request, Response} from "express";
+import {HTTP_STATUSES} from "../http_statuses";
+import {postsControl} from "../repositories/repository-posts";
 
 const urlPattern = new RegExp('^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$');
 
@@ -24,8 +27,18 @@ const blogIdValidation = body('blogId')
     .isString().withMessage('Invalid type')
     .trim()
     .notEmpty().withMessage('Field must not be empty')
-    .custom(value => !!blogsControl.getBlogById(value)).withMessage('No blog!')
+    .custom(async value => {
+     const isHaveBlog = await blogsControl.getBlogById(value)
+       if(!isHaveBlog) {
+            throw new Error();
+       }
+        return false
+    }).withMessage('No blog!')
 
+export const checkPostId = async (req: Request, res: Response, next: NextFunction) =>{
+    const isHaveId = await postsControl.getPostById(req.params.id)
+    isHaveId ? next() :  res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+}
 
 const nameValidation = body('name')
     .isString().withMessage('Invalid type')

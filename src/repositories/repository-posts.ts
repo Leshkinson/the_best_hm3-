@@ -9,22 +9,19 @@ export const postsControl = {
     getPostById(id: string): Promise<PostType | null> {
         return postCollections.findOne({id: id})
     },
-    async createPost(body: PostType): Promise<PostType | null> {
+    async createPost(body: PostType): Promise<PostType > {
         const findBlog = await blogsControl.getBlogById(body.blogId)
-        if (findBlog) {
             const newPost = {
                 id: (+(new Date())).toString(),
                 title: body.title,
                 shortDescription: body.shortDescription,
                 content: body.content,
                 blogId: body.blogId,
+                //@ts-ignore
                 blogName: findBlog.name
             }
             await postCollections.insertOne(newPost)
             return newPost
-        } else {
-            return null
-        }
     },
     async changePost(id: string, body: PostType): Promise<boolean> {
         const {title, blogId, blogName, content, shortDescription} = body

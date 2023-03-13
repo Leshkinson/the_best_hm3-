@@ -4,14 +4,13 @@ import {HTTP_STATUSES} from "../src/http_statuses";
 import {blogsControl} from "../src/repositories/repository-blogs";
 
 
-
 const testBlogData = {
     "name": "CorrectedName",
     "description": "CorrectedName",
     "websiteUrl": "https://corrected-url"
 }
 
-describe('/blogsTest_path_1', () => {
+describe('/test_blogs_path_1', () => {
 
     it('GET, should return blogs[]', async () => {
         await request(app)
@@ -29,7 +28,6 @@ describe('/blogsTest_path_1', () => {
     })
 
     it('Post, created blog no auth user', async () => {
-        console.log('test4')
         await request(app)
             .post('/blogs')
             .send(testBlogData)
@@ -43,7 +41,6 @@ describe('/blogsTest_path_1', () => {
             .auth('admin', 'qwerty', {type: "basic"})
             .expect(HTTP_STATUSES.BAD_REQUEST_400)
     })
-
 
 
     it('PUT, trying to change blog with invalid body', async () => {
@@ -68,19 +65,10 @@ describe('/blogsTest_path_1', () => {
     })
 
 
-    afterAll(async () => {
-        await request(app).delete('/testing/all-data')
-    })
 })
-describe('/blogsTest_path_2',  () => {
+describe('/test_blogs_path_2', () => {
     let arrBlog
-    let firstElement:any
-    beforeAll(async () => {
-        await request(app)
-            .post('/blogs')
-            .auth('admin', 'qwerty', {type: "basic"})
-            .send(testBlogData)
-    })
+    let firstElement: any
 
     it('GET, try should return blog by id', async () => {
         arrBlog = await blogsControl.getAllBlogs()
@@ -101,7 +89,8 @@ describe('/blogsTest_path_2',  () => {
     })
 
 
-    it('DELETE, successful remove blogs', async () => {
+    it('DELETE, successful remove blog', async () => {
+        console.log('firstElement.id', firstElement.id)
         await request(app)
             .delete('/blogs/' + firstElement.id)
             .auth('admin', 'qwerty', {type: "basic"})

@@ -16,5 +16,4 @@ export async function runDB() {
     } catch {
          await client.close()
     }
-
 }

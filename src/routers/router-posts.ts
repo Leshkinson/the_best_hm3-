@@ -1,9 +1,10 @@
 import {Request, Response, Router} from "express";
 import {HTTP_STATUSES} from "../http_statuses";
 import {postsControl} from "../repositories/repository-posts";
-import {postValidations} from "../validator/validators";
+import {checkPostId, postValidations} from "../validator/validators";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authorizationGuard} from "../middleware/authorization-guard";
+
 
 
 export const postsRouter = Router({})
@@ -24,14 +25,10 @@ postsRouter.get('/:id', async (req: Request, res: Response) => {
 //-------------------POST---------------//
 postsRouter.post('/', authorizationGuard, postValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newPost = await postsControl.createPost(req.body)
-    if (newPost) {
         res.status(HTTP_STATUSES.CREATED_201).send(newPost)
-    } else {
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND)
-    }
 })
 //-------------------PUT---------------//
-postsRouter.put('/:id', authorizationGuard, postValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
+postsRouter.put('/:id', authorizationGuard,checkPostId, postValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const isChangePost = await postsControl.changePost(req.params.id, req.body)
     if (isChangePost) {
         res.sendStatus(HTTP_STATUSES.NO_CONTENT)
