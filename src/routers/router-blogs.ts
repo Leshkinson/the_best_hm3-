@@ -29,10 +29,11 @@ blogsRouter.post('/', authorizationGuard, blogValidations, inputValidationMiddle
 blogsRouter.put('/:id', authorizationGuard, blogValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const isChangeBlog = await blogsControl.changeBlog(req.params.id, req.body)
     if (isChangeBlog)
+    {
         res.sendStatus(HTTP_STATUSES.NO_CONTENT)
-
-    res.sendStatus(HTTP_STATUSES.NOT_FOUND)
-
+        return
+    }
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND)
 })
 //-------------------DELETE---------------//
 blogsRouter.delete('/:id', authorizationGuard, async (req: Request, res: Response) => {
