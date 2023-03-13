@@ -4,7 +4,7 @@ import {BlogType, PostType} from "./src/types";
 
 dotenv.config()
 
-const mongoURi = process.env.MONGO_URL|| "mongodb://127.0.0.1:27017"
+const mongoURi = process.env.MONGO_URL || "mongodb+srv://dimaaleks943:AdB7QJrdw9zyOLUY@cluster0.kv7bgcj.mongodb.net/?retryWrites=true&w=majority" || "mongodb://127.0.0.1:27017"
 const client = new MongoClient(mongoURi)
 const myDB = client.db("myDB")
 export const postCollections = myDB.collection<PostType>("posts")
