@@ -3,6 +3,8 @@ export type BlogType = {
     name: string
     description: string
     websiteUrl: string
+    isMembership: boolean
+    createdAt: string
 }
 
 export type PostType = {
@@ -12,4 +14,5 @@ export type PostType = {
     content: string
     blogId: string
     blogName: string
+    createdAt: string
 }

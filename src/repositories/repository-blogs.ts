@@ -13,7 +13,9 @@ export const blogsControl = {
             id: (+(new Date())).toString(),
             name: body.name,
             description: body.description,
-            websiteUrl: body.websiteUrl
+            websiteUrl: body.websiteUrl,
+            createdAt: new Date().toString(),
+            isMembership: false
         }
         await blogCollections.insertOne(newBlog)
         return newBlog

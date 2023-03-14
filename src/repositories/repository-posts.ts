@@ -18,7 +18,8 @@ export const postsControl = {
                 content: body.content,
                 blogId: body.blogId,
                 //@ts-ignore
-                blogName: findBlog.name
+                blogName: findBlog.name,
+                createdAt: new Date().toString()
             }
             await postCollections.insertOne(newPost)
             return newPost
