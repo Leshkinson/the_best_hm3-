@@ -4,18 +4,19 @@ import {blogsControl} from "../repositories/repository-blogs";
 import {blogValidations} from "../validator/validators";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authorizationGuard} from "../middleware/authorization-guard";
+import {blogsModels} from "../models/blogs-models";
 
 export const blogsRouter = Router({})
 
 //-------------------GET---------------//
 blogsRouter.get('/', async (req: Request, res: Response) => {
     const blogs = await blogsControl.getAllBlogs()
-    res.status(HTTP_STATUSES.OK200).send(blogs)
+    res.status(HTTP_STATUSES.OK200).send(blogsModels(blogs))
 })
 blogsRouter.get('/:id', async (req: Request, res: Response) => {
     const findBlog = await blogsControl.getBlogById(req.params.id)
     if (findBlog) {
-        res.status(HTTP_STATUSES.OK200).send(findBlog)
+        res.status(HTTP_STATUSES.OK200).send(blogsModels(findBlog))
     } else {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND)
     }
@@ -23,7 +24,7 @@ blogsRouter.get('/:id', async (req: Request, res: Response) => {
 //-------------------POST---------------//
 blogsRouter.post('/', authorizationGuard, blogValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newBlog = await blogsControl.createBlog(req.body)
-    res.status(HTTP_STATUSES.CREATED_201).send(newBlog)
+    res.status(HTTP_STATUSES.CREATED_201).send(blogsModels(newBlog))
 })
 //-------------------PUT---------------//
 blogsRouter.put('/:id', authorizationGuard, blogValidations, inputValidationMiddleware, async (req: Request, res: Response) => {

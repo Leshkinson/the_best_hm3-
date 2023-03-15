@@ -4,6 +4,7 @@ import {postsControl} from "../repositories/repository-posts";
 import {checkPostId, postValidations} from "../validator/validators";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authorizationGuard} from "../middleware/authorization-guard";
+import {postModels} from "../models/post-models";
 
 
 
@@ -12,12 +13,12 @@ export const postsRouter = Router({})
 //-------------------GET---------------//
 postsRouter.get('/', async (req: Request, res: Response) => {
     const posts = await postsControl.getAllPosts()
-    res.status(HTTP_STATUSES.OK200).send(posts)
+    res.status(HTTP_STATUSES.OK200).send(postModels(posts))
 })
 postsRouter.get('/:id', async (req: Request, res: Response) => {
-    const findBlog = await postsControl.getPostById(req.params.id)
-    if (findBlog) {
-        res.status(HTTP_STATUSES.OK200).send(findBlog)
+    const findPost = await postsControl.getPostById(req.params.id)
+    if (findPost) {
+        res.status(HTTP_STATUSES.OK200).send(postModels(findPost))
     } else {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND)
     }
@@ -25,7 +26,7 @@ postsRouter.get('/:id', async (req: Request, res: Response) => {
 //-------------------POST---------------//
 postsRouter.post('/', authorizationGuard, postValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newPost = await postsControl.createPost(req.body)
-        res.status(HTTP_STATUSES.CREATED_201).send(newPost)
+        res.status(HTTP_STATUSES.CREATED_201).send(postModels(newPost))
 })
 //-------------------PUT---------------//
 postsRouter.put('/:id', authorizationGuard,checkPostId, postValidations, inputValidationMiddleware, async (req: Request, res: Response) => {
