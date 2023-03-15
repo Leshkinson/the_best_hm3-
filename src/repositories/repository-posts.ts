@@ -25,17 +25,19 @@ export const postsControl = {
             return newPost
     },
     async changePost(id: string, body: PostType): Promise<boolean> {
-        const {title, blogId, blogName, content, shortDescription} = body
+        const {title, blogId, content, shortDescription} = body
+        const findBlog = await blogsControl.getBlogById(body.blogId)
         const result = await postCollections.updateOne({id: id}, {
             $set: {
                 title,
                 blogId,
-                blogName,
+                //@ts-ignore
+                blogName: findBlog.name,
                 content,
                 shortDescription
             }
         })
-        const findBlog = await blogsControl.getBlogById(body.blogId)
+
         return !!(result.matchedCount === 1 && findBlog);
 
     },
